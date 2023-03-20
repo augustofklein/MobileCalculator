@@ -57,12 +57,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void pressNumber(View view){
-
         Button button = (Button) view;
         String text = button.getText().toString();
 
         numPressed(text);
-
     }
 
     public void pressOperator(View view){
@@ -74,15 +72,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void pressClear(View view){
         initializeDisplay();
-        pendingOperation = "=";
+        ajustPendingOperation("=");
     }
 
     public void pressBtnDot(View view){
         addFloatingDot();
     }
 
-    private void addFloatingDot(){
+    public void ajustPendingOperation(String operation){
+        pendingOperation = operation;
+    }
 
+    private void addFloatingDot(){
         String currentDisplay = getFromDisplay();
 
         if(flagNewNumber){
@@ -94,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
             }
             showOnDisplay(currentDisplay);
         }
-
     }
 
     private void returnOperation(String operation){
@@ -123,11 +123,12 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     default:
-                        acumulator += Float.parseFloat(getFromDisplay());
-                        pendingOperation = operation;
+                        acumulator = Float.parseFloat(getFromDisplay());
                         break;
                 }
             }
+
+            ajustPendingOperation(operation);
             showOnDisplay(acumulator);
         }
     }
